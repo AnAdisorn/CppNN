@@ -1,0 +1,35 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(CppNN VERSION 0.0.1)
+
+############################################################
+# Compiler
+############################################################
+
+set(CMAKE_CXX_STANDARD 23)
+
+add_compile_options(-Wall -Wextra -O3)
+
+############################################################
+# Create a library
+############################################################
+
+include_directories(include)
+add_library(tensor lib/tensor.cc)
+
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(tensor PUBLIC OpenMP::OpenMP_CXX)
+endif()
+
+############################################################
+# Create tests
+############################################################
+# Enable testing for the project
+enable_testing()
+
+# Test creating tensor
+add_executable(create_tensor tests/create_tensor.cc)
+target_link_libraries(create_tensor PRIVATE tensor)
+add_test(NAME create_tensor
+         COMMAND create_tensor)
