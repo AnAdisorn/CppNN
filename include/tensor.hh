@@ -20,7 +20,7 @@ public:
         _arr.resize(size);
     }
 
-    std::vector<T> arr() const
+    const std::vector<T> &arr() const
     {
         return _arr;
     }
@@ -79,9 +79,19 @@ public:
         return _arr[index];
     }
 
-    Tensor<T> operator+(Tensor<T> other)
+    Tensor<T> operator+(const Tensor<T> &other)
     {
         assert(_shape == other.shape());
+        Tensor<T> result({_size}); // create flat tensor
+        
+        auto &other_arr = other.arr();
+        for (size_t i = 0; i < _size; i++)
+        {
+            result[{i}] = _arr[i] + other_arr[i];
+        }
+        result.reshape(_shape);
+        
+        return result;
     }
 
 private:
