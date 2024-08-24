@@ -1,7 +1,7 @@
 #pragma once
-#include "Eigen/Dense"
 #include "omp.h"
 #include <vector>
+#include <cassert>
 
 template <typename T>
 class Tensor
@@ -19,7 +19,7 @@ public:
     // Modifiers
     void reshape(const std::vector<size_t> &shape);
     void flatten();
-    void setArrIndex(size_t index, T val);
+    void setArrValue(size_t index, T val);
 
     // Element access
     T &operator[](const std::vector<size_t> &indices);

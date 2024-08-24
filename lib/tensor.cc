@@ -61,7 +61,7 @@ void Tensor<T>::flatten()
 }
 
 template <typename T>
-void Tensor<T>::setArrIndex(size_t index, T val)
+void Tensor<T>::setArrValue(size_t index, T val)
 {
     _arr[index] = val;
 }
@@ -96,7 +96,7 @@ Tensor<T> Tensor<T>::operator+(const Tensor<T> &other)
 #pragma omp parallel for
     for (size_t i = 0; i < _size; i++)
     {
-        result.setArr(i, _arr[i] + other_arr[i]);
+        result.setArrValue(i, _arr[i] + other_arr[i]);
     }
 
     return result;
@@ -114,3 +114,7 @@ void Tensor<T>::operator+=(const Tensor<T> &other)
         _arr[i] += other_arr[i];
     }
 }
+
+template class Tensor<int>;
+template class Tensor<float>;
+template class Tensor<double>;
