@@ -79,19 +79,36 @@ public:
         return _arr[index];
     }
 
+    void setArrIndex(size_t index, T val)
+    {
+        _arr[i] = val;
+    }
+
     Tensor<T> operator+(const Tensor<T> &other)
     {
         assert(_shape == other.shape());
-        Tensor<T> result({_size}); // create flat tensor
-        
+        Tensor<T> result({_shape});
+
         auto &other_arr = other.arr();
+#pragma omp parallel for
         for (size_t i = 0; i < _size; i++)
         {
-            result[{i}] = _arr[i] + other_arr[i];
+            result.setArr(i, _arr[i] + other_arr[i]);
         }
-        result.reshape(_shape);
-        
+
         return result;
+    }
+
+    void operator+=(const Tensor<T> &other)
+    {
+        assert(_shape == other.shape());
+
+        auto &other_arr = other.arr();
+#pragma omp parallel for
+        for (size_t i = 0; i < _size; i++)
+        {
+            _arr[i] += other_arr[i];
+        }
     }
 
 private:
