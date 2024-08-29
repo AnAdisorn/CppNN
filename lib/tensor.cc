@@ -94,7 +94,7 @@ Tensor<T> Tensor<T>::operator+(const Tensor<T> &other)
     Tensor<T> result({_shape});
 
     auto &other_arr = other.arr();
-#pragma omp parallel for
+#pragma omp simd
     for (size_t i = 0; i < _size; i++)
     {
         result.setValue(i, _arr[i] + other_arr[i]);
@@ -110,7 +110,7 @@ Tensor<T> Tensor<T>::operator-(const Tensor<T> &other)
     Tensor<T> result({_shape});
 
     auto &other_arr = other.arr();
-#pragma omp parallel for
+#pragma omp simd
     for (size_t i = 0; i < _size; i++)
     {
         result.setValue(i, _arr[i] - other_arr[i]);
@@ -125,7 +125,7 @@ void Tensor<T>::operator+=(const Tensor<T> &other)
     assert(_shape == other.shape());
 
     auto &other_arr = other.arr();
-#pragma omp parallel for
+#pragma omp simd
     for (size_t i = 0; i < _size; i++)
     {
         _arr[i] += other_arr[i];
@@ -138,7 +138,7 @@ void Tensor<T>::operator-=(const Tensor<T> &other)
     assert(_shape == other.shape());
 
     auto &other_arr = other.arr();
-#pragma omp parallel for
+#pragma omp simd
     for (size_t i = 0; i < _size; i++)
     {
         _arr[i] -= other_arr[i];
