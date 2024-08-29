@@ -61,8 +61,9 @@ void Tensor<T>::flatten()
 }
 
 template <typename T>
-void Tensor<T>::setArrValue(size_t index, T val)
+void Tensor<T>::setValue(size_t index, T val)
 {
+    assert(index <= _size);
     _arr[index] = val;
 }
 
@@ -96,7 +97,23 @@ Tensor<T> Tensor<T>::operator+(const Tensor<T> &other)
 #pragma omp parallel for
     for (size_t i = 0; i < _size; i++)
     {
-        result.setArrValue(i, _arr[i] + other_arr[i]);
+        result.setValue(i, _arr[i] + other_arr[i]);
+    }
+
+    return result;
+}
+
+template <typename T>
+Tensor<T> Tensor<T>::operator-(const Tensor<T> &other)
+{
+    assert(_shape == other.shape());
+    Tensor<T> result({_shape});
+
+    auto &other_arr = other.arr();
+#pragma omp parallel for
+    for (size_t i = 0; i < _size; i++)
+    {
+        result.setValue(i, _arr[i] - other_arr[i]);
     }
 
     return result;
@@ -112,6 +129,19 @@ void Tensor<T>::operator+=(const Tensor<T> &other)
     for (size_t i = 0; i < _size; i++)
     {
         _arr[i] += other_arr[i];
+    }
+}
+
+template <typename T>
+void Tensor<T>::operator-=(const Tensor<T> &other)
+{
+    assert(_shape == other.shape());
+
+    auto &other_arr = other.arr();
+#pragma omp parallel for
+    for (size_t i = 0; i < _size; i++)
+    {
+        _arr[i] -= other_arr[i];
     }
 }
 

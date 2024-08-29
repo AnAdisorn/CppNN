@@ -19,14 +19,16 @@ public:
     // Modifiers
     void reshape(const std::vector<size_t> &shape);
     void flatten();
-    void setArrValue(size_t index, T val);
+    void setValue(size_t index, T val);
 
     // Element access
     T &operator[](const std::vector<size_t> &indices);
 
     // Arithmetic operations
     Tensor<T> operator+(const Tensor<T> &other);
+    Tensor<T> operator-(const Tensor<T> &other);
     void operator+=(const Tensor<T> &other);
+    void operator-=(const Tensor<T> &other);
 
 private:
     // Private members
